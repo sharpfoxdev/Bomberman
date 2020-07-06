@@ -12,7 +12,7 @@ namespace Bomberman
         private Bitmap picture;
         public bool destroyable { get; set; }
         public bool stepable { get; set; } //can I step on it
-        public Tile(Bitmap picture, bool destroyable, bool stepable)
+        public Tile(Bitmap picture, bool stepable, bool destroyable)
         {
             this.stepable = stepable;
             this.destroyable = destroyable;

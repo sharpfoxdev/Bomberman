@@ -9,7 +9,7 @@ namespace Bomberman
 {
     class PictureManager
     {
-        public Bitmap wall {get; set;}
+        public Bitmap wall { get; set;} //normal variable instead of get set property should work too
         public Bitmap wood { get; set; }
         public Bitmap sand { get; set; }
         public Bitmap playerUp { get; set; }
@@ -23,10 +23,10 @@ namespace Bomberman
             wall = new Bitmap("wall.png");
             wood = new Bitmap("wood.png");
             sand = new Bitmap("sand.png");
-            playerUp = new Bitmap("playerUp.png");
-            playerDown = new Bitmap("playerDown.png");
-            playerLeft = new Bitmap("playerLeft.png");
-            playerRight = new Bitmap("playerRight.png");
+            playerUp = new Bitmap("player1Up.png");
+            playerDown = new Bitmap("player1Down.png");
+            playerLeft = new Bitmap("player1Left.png");
+            playerRight = new Bitmap("player1Right.png");
             bomb = new Bitmap("bomb.png");
             explosion = new Bitmap("explosion.png");
         }
