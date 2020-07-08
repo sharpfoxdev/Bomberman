@@ -48,7 +48,11 @@ namespace Bomberman
                             break;
                         case '1'://player1
                             mapGrid[x, y] = new Tile(game.pictureManager.sand, true, false);//on the spot will be sand
-                            game.player.position = new Point(x * 46, y * 46);
+                            game.player1.position = new Point(x * 46, y * 46);
+                            break;
+                        case '2'://player2
+                            mapGrid[x, y] = new Tile(game.pictureManager.sand, true, false);//on the spot will be sand
+                            game.player2.position = new Point(x * 46, y * 46);
                             break;
                         default:
                             break;
@@ -98,10 +102,6 @@ namespace Bomberman
             objectsToAdd.Add(obj);
         }
         public void PlacePlayer()
-        {
-            //TODO
-        }
-        public void FreePlayer()
         {
             //TODO
         }

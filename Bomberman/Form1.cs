@@ -16,6 +16,7 @@ namespace Bomberman
         public Form1()
         {
             InitializeComponent();
+            timer1.Start();
         }
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
@@ -36,7 +37,8 @@ namespace Bomberman
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            //TODO
+            game.keyDown(e.KeyCode);
+            pictureBox1.Refresh();
         }
     }
 }
