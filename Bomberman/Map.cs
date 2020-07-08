@@ -109,7 +109,10 @@ namespace Bomberman
                 objects.Add(obj);
             }
             objectsToAdd.Clear();
-
+            if(game.player1.dead || game.player2.dead)
+            {
+                game.gameOver = true;
+            }
             game.player1.Step();
             game.player2.Step();
         }

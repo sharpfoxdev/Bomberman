@@ -31,15 +31,18 @@ namespace Bomberman
             if (game.gameOver)
             {
                 timer1.Stop();
-                MessageBox.Show("end");
+                if (game.player1.dead && game.player2.dead)
+                    MessageBox.Show("Both of you died. There's no winner");
+                else if (game.player1.dead)
+                    MessageBox.Show("Player 1 is dead, player 2 wins");
+                else
+                    MessageBox.Show("Player 2 is dead, player 1 wins");
             }
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             game.KeyDown(e.KeyCode);
-            game.player1.Step();
-            game.player2.Step();
         }
         private void Form1_KeyUp(object sender, KeyEventArgs e)
         {

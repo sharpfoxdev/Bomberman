@@ -18,10 +18,11 @@ namespace Bomberman
             DOWN,
             UP,
         }
-        public int bombStrenght = 2;
+        public int bombStrenght = 1;
         int numberOfPlayer;
+        public bool dead = false;
         public MovementDirection orientation = MovementDirection.NONE;
-        //TODO several bombs, speed
+        public int amountOfBombs = 2;
         List<GameObject> objects = new List<GameObject>();
         public Player(Game game, int numberOfPlayer) : base(game)//BASE hra?
         {
@@ -34,7 +35,7 @@ namespace Bomberman
             {
                 picture = game.pictureManager.player2Down;
             }
-            speed = 2;
+            speed = 1;
         }
         public void Pick(GameObject obj)
         {
@@ -76,9 +77,13 @@ namespace Bomberman
         }
         public void PlaceBomb()
         {
-            Bomb bomb = new Bomb(game, bombStrenght);
-            bomb.position = new Point(((int)Math.Round(position.X / 46.0)) * 46, ((int)Math.Round(position.Y / 46.0)) * 46); //to fit in the grid
-            game.map.AddObject(bomb);
+            if(amountOfBombs > 0)
+            {
+                amountOfBombs--;
+                Bomb bomb = new Bomb(game, bombStrenght, numberOfPlayer);
+                bomb.position = new Point(((int)Math.Round(position.X / 46.0)) * 46, ((int)Math.Round(position.Y / 46.0)) * 46); //to fit in the grid
+                game.map.AddObject(bomb);
+            } 
         }
 
     }
