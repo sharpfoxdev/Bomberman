@@ -87,11 +87,44 @@ namespace Bomberman
         }
         public void Step()
         {
-            //TODO
+            foreach(GameObject obj in objects)
+            {
+                obj.Step();
+                if(obj.pickable && game.player1.Collision(obj))
+                {
+                    game.player1.Pick(obj);
+                }
+                else if (obj.pickable && game.player2.Collision(obj))
+                {
+                    game.player2.Pick(obj);
+                }
+            }
+            foreach(GameObject obj in objectsToDelete)
+            {
+                objects.Remove(obj);
+            }
+            objectsToDelete.Clear();//deleted all of them
+            foreach(GameObject obj in objectsToAdd)
+            {
+                objects.Add(obj);
+            }
+            objectsToAdd.Clear();
+
+            game.player1.Step();
+            game.player2.Step();
         }
-        public void IsFree()
+        public bool IsFree(int x, int y)
         {
-            //TODO
+            int gridX = x / 46;
+            int gridY = y / 46;
+            if(mapGrid[gridX, gridY].stepable)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         public void DeleteObject(GameObject obj)
         {

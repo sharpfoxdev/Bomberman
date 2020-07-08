@@ -31,7 +31,7 @@ namespace Bomberman
             player1.Draw(g);
             player2.Draw(g);
         }
-        public void keyDown(Keys key)
+        public void KeyDown(Keys key)
         {
             switch (key)
             {
@@ -75,6 +75,17 @@ namespace Bomberman
                     break;
                 default:
                     break;
+            }
+        }
+        public void KeyUp(Keys key)
+        {
+            if (key == Keys.W || key == Keys.S || key == Keys.A || key == Keys.D)
+            {
+                player1.orientation = Player.MovementDirection.NONE;
+            }
+            else if (key == Keys.Up || key == Keys.Down || key == Keys.Left || key == Keys.Right)
+            {
+                player2.orientation = Player.MovementDirection.NONE;
             }
         }
     }

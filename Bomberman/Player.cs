@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Net.Configuration;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -33,6 +34,7 @@ namespace Bomberman
             {
                 picture = game.pictureManager.player2Down;
             }
+            speed = 2;
         }
         public void Pick(GameObject obj)
         {
@@ -46,11 +48,37 @@ namespace Bomberman
         }
         public override void Step()
         {
-
+            switch (orientation)
+            {
+                case MovementDirection.DOWN:
+                    if(game.map.IsFree(position.X, position.Y + speed + 31) && game.map.IsFree(position.X + 31, position.Y + speed + 31))//check if both corners fit in where Im walking
+                    {
+                        position.Y += speed;
+                    }
+                    break;
+                case MovementDirection.UP:
+                    if (game.map.IsFree(position.X, position.Y - speed) && game.map.IsFree(position.X + 31, position.Y - speed))
+                        position.Y -= speed;
+                    break;
+                case MovementDirection.LEFT:
+                    if (game.map.IsFree(position.X - speed, position.Y) && game.map.IsFree(position.X - speed, position.Y + 31))
+                        position.X -= speed;
+                    break;
+                case MovementDirection.RIGHT:
+                    if (game.map.IsFree(position.X + speed + 31, position.Y) && game.map.IsFree(position.X + speed + 31, position.Y + 31))
+                        position.X += speed;
+                    break;
+                case MovementDirection.NONE:
+                    break;
+                default:
+                    break;
+            }
         }
         public void PlaceBomb()
         {
-            //TODO
+            Bomb bomb = new Bomb(game, bombStrenght);
+            bomb.position = new Point(((int)Math.Round(position.X / 46.0)) * 46, ((int)Math.Round(position.Y / 46.0)) * 46); //to fit in the grid
+            game.map.AddObject(bomb);
         }
 
     }
