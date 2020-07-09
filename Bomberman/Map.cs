@@ -43,8 +43,8 @@ namespace Bomberman
                         case 'w'://wall
                             mapGrid[x, y] = new Tile(game.pictureManager.wall, false, false);
                             break;
-                        case 'd': //wood
-                            mapGrid[x, y] = new Tile(game.pictureManager.wood, false, true);
+                        case 'd': //crate
+                            mapGrid[x, y] = new Tile(game.pictureManager.crate, false, true);
                             break;
                         case '1'://player1
                             mapGrid[x, y] = new Tile(game.pictureManager.sand, true, false);//on the spot will be sand
