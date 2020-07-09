@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -45,6 +46,29 @@ namespace Bomberman
                             break;
                         case 'd': //crate
                             mapGrid[x, y] = new Tile(game.pictureManager.crate, false, true);
+                            int whatsInTheCrate = generator.Next(7);
+                            if(whatsInTheCrate == 0)
+                            {
+                                BonusExplosion expl = new BonusExplosion(game);
+                                expl.position = new Point(x * 46, y * 46);
+                                objects.Add(expl);
+                            }
+                            else if (whatsInTheCrate == 1)
+                            {
+                                BonusBomb bomb = new BonusBomb(game);
+                                bomb.position = new Point(x * 46, y * 46);
+                                objects.Add(bomb);
+                            }
+                            else if (whatsInTheCrate == 2)
+                            {
+                                BonusSpeed speed = new BonusSpeed(game);
+                                speed.position = new Point(x * 46, y * 46);
+                                objects.Add(speed);
+                            }
+                            else//nothing inside
+                            {
+
+                            }
                             break;
                         case '1'://player1
                             mapGrid[x, y] = new Tile(game.pictureManager.sand, true, false);//on the spot will be sand
@@ -137,15 +161,11 @@ namespace Bomberman
         {
             objectsToAdd.Add(obj);
         }
-        public void PlacePlayer()
+        public void FindCrate()
         {
             //TODO
         }
-        public void FindWood()
-        {
-            //TODO
-        }
-        public List<GameObject> GetGameObjects()
+        public List<GameObject> ReturnGameObjects()
         {
             return objects;
         }

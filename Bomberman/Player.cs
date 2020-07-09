@@ -22,7 +22,8 @@ namespace Bomberman
         int numberOfPlayer;
         public bool dead = false;
         public MovementDirection orientation = MovementDirection.NONE;
-        public int amountOfBombs = 2;
+        public int amountOfBombs = 1;
+        public int timeSpeededUp;
         List<GameObject> objects = new List<GameObject>();
         public Player(Game game, int numberOfPlayer) : base(game)//BASE hra?
         {
@@ -35,7 +36,7 @@ namespace Bomberman
             {
                 picture = game.pictureManager.player2Down;
             }
-            speed = 1;
+            speed = 2;
         }
         public void Pick(GameObject obj)
         {
@@ -49,6 +50,15 @@ namespace Bomberman
         }
         public override void Step()
         {
+            if(timeSpeededUp > 0)
+            {
+                speed = 3;
+                timeSpeededUp--;
+            }
+            else
+            {
+                speed = 2;
+            }
             switch (orientation)
             {
                 case MovementDirection.DOWN:

@@ -16,6 +16,8 @@ namespace Bomberman
         public override void Step()
         {
             timeOfExploding--;
+            List<GameObject> objects = game.map.ReturnGameObjects();
+
             if (!game.map.mapGrid[position.X / 46, position.Y / 46].stepable && game.map.mapGrid[position.X / 46, position.Y / 46].destroyable)
             {
                 game.map.mapGrid[position.X / 46, position.Y / 46] = new Tile(game.pictureManager.sand, true, false);//becomes sand
@@ -23,6 +25,18 @@ namespace Bomberman
             if (timeOfExploding <= 0)
             {
                 game.map.DeleteObject(this);
+                foreach(GameObject obj in objects)
+                {
+                    
+                    if (Collision(obj) && obj.visible && obj.pickable)
+                    {
+                        game.map.DeleteObject(obj);
+                    }
+                    if (Collision(obj) && !obj.visible)
+                    {
+                        obj.visible = true;
+                    }
+                }
             }
             if (Collision(game.player1))
             {
@@ -32,7 +46,12 @@ namespace Bomberman
             {
                 game.player2.dead = true;
             }
+            foreach(GameObject obj in objects)
+            {
+                
+                
+                //todo vymazat viditelne objekty pri kolizi
+            }
         }
-
     }
 }

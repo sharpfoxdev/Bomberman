@@ -6,24 +6,24 @@ using System.Threading.Tasks;
 
 namespace Bomberman
 {
-    class BonusExplosion : GameObject
+    class BonusSpeed : GameObject
     {
-
-        public BonusExplosion(Game game) : base(game)
+        public BonusSpeed(Game game) : base(game)
         {
-            picture = game.pictureManager.bonusExplosion;
-            visible = false;
+            this.game = game;
+            picture = game.pictureManager.bonusSpeed;
             pickable = true;
+            visible = false;
         }
         public override void Step()
         {
             if (Collision(game.player1))
             {
-                game.player1.bombStrenght++;
+                game.player1.timeSpeededUp = 1000;
             }
             else if (Collision(game.player2))
             {
-                game.player2.bombStrenght++;
+                game.player2.timeSpeededUp = 1000;
             }
         }
     }

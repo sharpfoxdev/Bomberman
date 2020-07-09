@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace Bomberman
 {
-    class BonusExplosion : GameObject
+    class BonusBomb : GameObject
     {
-
-        public BonusExplosion(Game game) : base(game)
+        public BonusBomb(Game game) : base(game)
         {
-            picture = game.pictureManager.bonusExplosion;
+            picture = game.pictureManager.bonusBomb;
             visible = false;
             pickable = true;
         }
@@ -19,11 +18,11 @@ namespace Bomberman
         {
             if (Collision(game.player1))
             {
-                game.player1.bombStrenght++;
+                game.player1.amountOfBombs++;
             }
             else if (Collision(game.player2))
             {
-                game.player2.bombStrenght++;
+                game.player2.amountOfBombs++;
             }
         }
     }

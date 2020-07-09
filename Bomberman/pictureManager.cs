@@ -22,6 +22,9 @@ namespace Bomberman
         public Bitmap player2Right { get; set; }
         public Bitmap bomb { get; set; }
         public Bitmap explosion { get; set; }
+        public Bitmap bonusExplosion { get; set; }
+        public Bitmap bonusSpeed { get; set; }
+        public Bitmap bonusBomb { get; set; }
         public void LoadPictures()
         {
             wall = new Bitmap("wall.png");
@@ -37,6 +40,9 @@ namespace Bomberman
             player2Right = new Bitmap("player2Right.png");
             bomb = new Bitmap("bomb.png");
             explosion = new Bitmap("explosion.png");
+            bonusExplosion = new Bitmap("bonusExplosion.png");
+            bonusSpeed = new Bitmap("bonusSpeed.png");
+            bonusBomb = new Bitmap("bonusBomb.png");
         }
     }
 }

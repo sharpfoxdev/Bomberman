@@ -47,7 +47,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bomb.cs" />
+    <Compile Include="BonusBomb.cs" />
     <Compile Include="BonusExplosion.cs" />
+    <Compile Include="BonusSpeed.cs" />
     <Compile Include="Explosion.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="Map.cs" />
