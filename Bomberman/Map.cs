@@ -160,6 +160,19 @@ namespace Bomberman
                 return false;
             }
         }
+        public bool IsDestroyable(int x, int y)
+        {
+            int gridX = x / tileSize;
+            int gridY = y / tileSize;
+            if (mapGrid[gridX, gridY].destroyable)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         public void DeleteObject(GameObject obj)
         {
             objectsToDelete.Add(obj);

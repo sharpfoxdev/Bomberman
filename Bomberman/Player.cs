@@ -8,20 +8,14 @@ using System.Threading.Tasks;
 
 namespace Bomberman
 {
+    
     class Player: GameObject
     {
-        public enum MovementDirection
-        {
-            NONE,
-            LEFT,
-            RIGHT,
-            DOWN,
-            UP,
-        }
+        
         public int bombStrenght = 1;
         int numberOfPlayer;
         private bool dead = false;
-        public MovementDirection orientation = MovementDirection.NONE;
+        public Direction orientation = Direction.NONE;
         public int amountOfBombs = 1;
         public int timeSpeededUp;
         List<GameObject> objects = new List<GameObject>();
@@ -69,25 +63,25 @@ namespace Bomberman
             }
             switch (orientation)
             {
-                case MovementDirection.DOWN:
+                case Direction.DOWN:
                     if(game.map.IsStepable(position.X, position.Y + speed + 31) && game.map.IsStepable(position.X + 31, position.Y + speed + 31))//check if both corners fit in where Im walking
                     {
                         position.Y += speed;
                     }
                     break;
-                case MovementDirection.UP:
+                case Direction.UP:
                     if (game.map.IsStepable(position.X, position.Y - speed) && game.map.IsStepable(position.X + 31, position.Y - speed))
                         position.Y -= speed;
                     break;
-                case MovementDirection.LEFT:
+                case Direction.LEFT:
                     if (game.map.IsStepable(position.X - speed, position.Y) && game.map.IsStepable(position.X - speed, position.Y + 31))
                         position.X -= speed;
                     break;
-                case MovementDirection.RIGHT:
+                case Direction.RIGHT:
                     if (game.map.IsStepable(position.X + speed + 31, position.Y) && game.map.IsStepable(position.X + speed + 31, position.Y + 31))
                         position.X += speed;
                     break;
-                case MovementDirection.NONE:
+                case Direction.NONE:
                     break;
                 default:
                     break;
@@ -95,11 +89,11 @@ namespace Bomberman
         }
         public void PlaceBomb()
         {
-            if(amountOfBombs > 0)
+            if (amountOfBombs > 0)
             {
                 amountOfBombs--;
                 Bomb bomb = new Bomb(game, bombStrenght, numberOfPlayer);
-                bomb.position = new Point(((int)Math.Round(position.X / 46.0)) * 46, ((int)Math.Round(position.Y / 46.0)) * 46); //to fit in the grid
+                bomb.position = new Point(((int)Math.Round((double)position.X / 46)) * 46, ((int)Math.Round((double)position.Y / 46)) * 46); //to fit in the grid
                 game.map.AddObject(bomb);
             } 
         }

@@ -13,6 +13,7 @@ namespace Bomberman
         {
             picture = game.pictureManager.explosion;
         }
+        
         public override void Step()
         {
             timeOfExploding--;

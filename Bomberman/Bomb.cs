@@ -24,62 +24,54 @@ namespace Bomberman
             if (timeTillDentonation <= 0)
             {
                 game.players[whoPlacedIt].amountOfBombs++; //whoPlaced it tells us the number of player with which we can index into list of players
-                /*if(whoPlacedIt == 0)
-                {
-                    game.player1.amountOfBombs++;//gives back the bomb
-                }
-                else
-                {
-                    game.player2.amountOfBombs++;
-                }*/
                 game.map.DeleteObject(this);
                 Explosion explosion = new Explosion(game);
                 game.map.AddObject(explosion);
-                explosion.position = position;
-                //predelat tenhle humac
-                for (int i = 0; i < bombStrenght; i++)
+                explosion.position = position;//explosion in a place of bomb
+                MakeExplosion(Direction.UP);
+                MakeExplosion(Direction.DOWN);
+                MakeExplosion(Direction.LEFT);
+                MakeExplosion(Direction.RIGHT);
+            }
+        }
+        void MakeExplosion(Direction direction)
+        {
+            for(int i = 0; i < bombStrenght; i++)
+            {
+                Explosion explosion = new Explosion(game);
+                switch (direction)//find the position where to place the explosion
                 {
-                    Explosion explosionUp = new Explosion(game);
-                    explosionUp.position.X = position.X;//doesnt change on x axis
-                    explosionUp.position.Y = position.Y - ((i + 1) * 46);//zacnu o jednu dal od stredu
-                    game.map.AddObject(explosionUp);
-                    if (!game.map.IsStepable(explosionUp.position.X, explosionUp.position.Y))//a tim skoncim jakmile dorazim k prvni prekazce
-                    {
+                    case Direction.UP:
+                        explosion.position.X = position.X;//doesnt change on x axis
+                        explosion.position.Y = position.Y - ((i + 1) * 46);
                         break;
-                    }
+                    case Direction.DOWN:
+                        explosion.position.X = position.X;
+                        explosion.position.Y = position.Y + ((i + 1) * 46);
+                        break;
+                    case Direction.LEFT:
+                        explosion.position.X = position.X - ((i + 1) * 46);
+                        explosion.position.Y = position.Y;
+                        break;
+                    case Direction.RIGHT:
+                        explosion.position.X = position.X + ((i + 1) * 46);
+                        explosion.position.Y = position.Y;
+                        break;
+                    default:
+                        break;
                 }
-                for (int i = 0; i < bombStrenght; i++)
+                if (game.map.IsStepable(explosion.position.X, explosion.position.Y))//check if you can place it there
                 {
-                    Explosion explosionDown = new Explosion(game);
-                    explosionDown.position.X = position.X;
-                    explosionDown.position.Y = position.Y + ((i + 1) * 46);
-                    game.map.AddObject(explosionDown);
-                    if (!game.map.IsStepable(explosionDown.position.X, explosionDown.position.Y))
-                    {
-                        break;
-                    }
+                    game.map.AddObject(explosion);
                 }
-                for (int i = 0; i < bombStrenght; i++)
+                else if (game.map.IsDestroyable(explosion.position.X, explosion.position.Y))//stops with first destroyable tile
                 {
-                    Explosion explosionLeft = new Explosion(game);
-                    explosionLeft.position.X = position.X - ((i + 1) * 46);
-                    explosionLeft.position.Y = position.Y;
-                    game.map.AddObject(explosionLeft);
-                    if (!game.map.IsStepable(explosionLeft.position.X, explosionLeft.position.Y))
-                    {
-                        break;
-                    }
+                    game.map.AddObject(explosion);
+                    break;
                 }
-                for (int i = 0; i < bombStrenght; i++)
+                else//wall, insnt stepable nor derstroyable, we dont put explosion there
                 {
-                    Explosion explosionUp = new Explosion(game);
-                    explosionUp.position.X = position.X + ((i + 1) * 46);
-                    explosionUp.position.Y = position.Y;
-                    game.map.AddObject(explosionUp);
-                    if (!game.map.IsStepable(explosionUp.position.X, explosionUp.position.Y))
-                    {
-                        break;
-                    }
+                    break;
                 }
             }
         }

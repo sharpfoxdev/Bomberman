@@ -10,6 +10,14 @@ using System.Windows.Forms;
 
 namespace Bomberman
 {
+    public enum Direction
+    {
+        NONE,
+        LEFT,
+        RIGHT,
+        DOWN,
+        UP,
+    }
     class Game
     {
         public Map map;
@@ -49,38 +57,38 @@ namespace Bomberman
             switch (key)
             {
                 case Keys.W:
-                    players[0].orientation = Player.MovementDirection.UP;
+                    players[0].orientation = Direction.UP;
                     players[0].picture = pictureManager.player1Up;
                     break;
                 case Keys.S:
-                    players[0].orientation = Player.MovementDirection.DOWN;
+                    players[0].orientation = Direction.DOWN;
                     players[0].picture = pictureManager.player1Down;
                     break;
                 case Keys.A:
-                    players[0].orientation = Player.MovementDirection.LEFT;
+                    players[0].orientation = Direction.LEFT;
                     players[0].picture = pictureManager.player1Left;
                     break;
                 case Keys.D:
-                    players[0].orientation = Player.MovementDirection.RIGHT;
+                    players[0].orientation = Direction.RIGHT;
                     players[0].picture = pictureManager.player1Right;
                     break;
                 case Keys.Space:
                     players[0].PlaceBomb();
                     break;
                 case Keys.Up:
-                    players[1].orientation = Player.MovementDirection.UP;
+                    players[1].orientation = Direction.UP;
                     players[1].picture = pictureManager.player2Up;
                     break;
                 case Keys.Down:
-                    players[1].orientation = Player.MovementDirection.DOWN;
+                    players[1].orientation = Direction.DOWN;
                     players[1].picture = pictureManager.player2Down;
                     break;
                 case Keys.Left:
-                    players[1].orientation = Player.MovementDirection.LEFT;
+                    players[1].orientation = Direction.LEFT;
                     players[1].picture = pictureManager.player2Left;
                     break;
                 case Keys.Right:
-                    players[1].orientation = Player.MovementDirection.RIGHT;
+                    players[1].orientation = Direction.RIGHT;
                     players[1].picture = pictureManager.player2Right;
                     break;
                 case Keys.ControlKey:
@@ -94,11 +102,11 @@ namespace Bomberman
         {
             if (key == Keys.W || key == Keys.S || key == Keys.A || key == Keys.D)
             {
-                players[0].orientation = Player.MovementDirection.NONE;
+                players[0].orientation = Direction.NONE;
             }
             else if (key == Keys.Up || key == Keys.Down || key == Keys.Left || key == Keys.Right)
             {
-                players[1].orientation = Player.MovementDirection.NONE;
+                players[1].orientation = Direction.NONE;
             }
         }
         public void Step()
