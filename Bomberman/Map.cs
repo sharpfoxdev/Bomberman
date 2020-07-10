@@ -126,14 +126,6 @@ namespace Bomberman
                         player.Pick(obj);
                     }
                 }
-                /*if(obj.pickable && game.player1.Collision(obj))
-                {
-                    game.player1.Pick(obj);
-                }
-                else if (obj.pickable && game.player2.Collision(obj))
-                {
-                    game.player2.Pick(obj);
-                }*/
             }
             foreach(GameObject obj in objectsToDelete)
             {

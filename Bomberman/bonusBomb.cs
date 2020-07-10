@@ -23,14 +23,6 @@ namespace Bomberman
                     player.amountOfBombs++;
                 }
             }
-            /*if (Collision(game.player1))
-            {
-                game.player1.amountOfBombs++;
-            }
-            else if (Collision(game.player2))
-            {
-                game.player2.amountOfBombs++;
-            }*/
         }
     }
 }

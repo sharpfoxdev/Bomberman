@@ -46,14 +46,6 @@ namespace Bomberman
                     player.Died();
                 }
             }
-            /*if (Collision(game.player1))
-            {
-                game.player1.Died();
-            }
-            if (Collision(game.player2))
-            {
-                game.player2.Died();
-            }*/
         }
     }
 }

@@ -24,15 +24,6 @@ namespace Bomberman
                     player.timeSpeededUp = 1000;
                 }
             }
-            /*
-            if (Collision(game.player1))
-            {
-                game.player1.timeSpeededUp = 1000;
-            }
-            else if (Collision(game.player2))
-            {
-                game.player2.timeSpeededUp = 1000;
-            }*/
         }
     }
 }

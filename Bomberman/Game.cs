@@ -21,7 +21,6 @@ namespace Bomberman
     class Game
     {
         public Map map;
-        //private Player player1, player2;
         public List<Player> players = new List<Player>();
         public bool gameOver;
         public PictureManager pictureManager;
@@ -38,10 +37,6 @@ namespace Bomberman
                 Player player = new Player(this, i); //i = cislo hrace
                 players.Add(player);
             }
-            /*player1 = new Player(this, 0);
-            player2 = new Player(this, 1);
-            players.Add(player1);
-            players.Add(player2);*/
             map = new Map(this, tileSize, gameObjectSize, pathToPlan);
         }
         public void Draw(Graphics g)
