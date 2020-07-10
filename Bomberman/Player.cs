@@ -20,7 +20,7 @@ namespace Bomberman
         }
         public int bombStrenght = 1;
         int numberOfPlayer;
-        public bool dead = false;
+        private bool dead = false;
         public MovementDirection orientation = MovementDirection.NONE;
         public int amountOfBombs = 1;
         public int timeSpeededUp;
@@ -28,7 +28,7 @@ namespace Bomberman
         public Player(Game game, int numberOfPlayer) : base(game)//BASE hra?
         {
             this.numberOfPlayer = numberOfPlayer;
-            if(numberOfPlayer == 1)
+            if(numberOfPlayer == 0)
             {
                 picture = game.pictureManager.player1Down;
             }
@@ -37,6 +37,14 @@ namespace Bomberman
                 picture = game.pictureManager.player2Down;
             }
             speed = 2;
+        }
+        public bool IsDead()
+        {
+            return dead;
+        }
+        public void Died()
+        {
+            dead = true;
         }
         public void Pick(GameObject obj)
         {
@@ -62,21 +70,21 @@ namespace Bomberman
             switch (orientation)
             {
                 case MovementDirection.DOWN:
-                    if(game.map.IsFree(position.X, position.Y + speed + 31) && game.map.IsFree(position.X + 31, position.Y + speed + 31))//check if both corners fit in where Im walking
+                    if(game.map.IsStepable(position.X, position.Y + speed + 31) && game.map.IsStepable(position.X + 31, position.Y + speed + 31))//check if both corners fit in where Im walking
                     {
                         position.Y += speed;
                     }
                     break;
                 case MovementDirection.UP:
-                    if (game.map.IsFree(position.X, position.Y - speed) && game.map.IsFree(position.X + 31, position.Y - speed))
+                    if (game.map.IsStepable(position.X, position.Y - speed) && game.map.IsStepable(position.X + 31, position.Y - speed))
                         position.Y -= speed;
                     break;
                 case MovementDirection.LEFT:
-                    if (game.map.IsFree(position.X - speed, position.Y) && game.map.IsFree(position.X - speed, position.Y + 31))
+                    if (game.map.IsStepable(position.X - speed, position.Y) && game.map.IsStepable(position.X - speed, position.Y + 31))
                         position.X -= speed;
                     break;
                 case MovementDirection.RIGHT:
-                    if (game.map.IsFree(position.X + speed + 31, position.Y) && game.map.IsFree(position.X + speed + 31, position.Y + 31))
+                    if (game.map.IsStepable(position.X + speed + 31, position.Y) && game.map.IsStepable(position.X + speed + 31, position.Y + 31))
                         position.X += speed;
                     break;
                 case MovementDirection.NONE:

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -11,7 +12,7 @@ namespace Bomberman
 {
     class Map
     {
-        public Tile[,] mapGrid = new Tile[15, 10];
+        public Tile[,] mapGrid;
         private List<GameObject> objects = new List<GameObject>();
         private List<GameObject> objectsToAdd = new List<GameObject>();
         private List<GameObject> objectsToDelete = new List<GameObject>();
@@ -19,18 +20,22 @@ namespace Bomberman
         int height;
         Random generator = new Random();
         private Game game;
-        public Map(Game game)
+        private int tileSize, gameObjectSize;
+        public Map(Game game, int tileSize, int gameObjectSize, string pathToPlan)
         {
             this.game = game;
+            this.tileSize = tileSize;
+            this.gameObjectSize = gameObjectSize;
 
-            System.IO.StreamReader sr = new System.IO.StreamReader("plan.txt");
+            System.IO.StreamReader sr = new System.IO.StreamReader(pathToPlan);
 
             width = int.Parse(sr.ReadLine());
             height = int.Parse(sr.ReadLine());
-            //mapGrid = new Tile[width, height];
+
+            mapGrid = new Tile[width, height];
 
             //jedu tak jak ctu po radcich
-            for(int y = 0; y < height; y++)//vyska - getlenght zjisti velikost pole v dane dimenzi
+            for (int y = 0; y < height; y++)//vyska - getlenght zjisti velikost pole v dane dimenzi
             {
                 string line = sr.ReadLine();
                 for(int x = 0; x < width; x++)//sirka
@@ -44,25 +49,25 @@ namespace Bomberman
                         case 'w'://wall
                             mapGrid[x, y] = new Tile(game.pictureManager.wall, false, false);
                             break;
-                        case 'd': //crate
+                        case 'c': //crate
                             mapGrid[x, y] = new Tile(game.pictureManager.crate, false, true);
                             int whatsInTheCrate = generator.Next(7);
                             if(whatsInTheCrate == 0)
                             {
                                 BonusExplosion expl = new BonusExplosion(game);
-                                expl.position = new Point(x * 46, y * 46);
+                                expl.position = new Point(x * tileSize, y * tileSize);
                                 objects.Add(expl);
                             }
                             else if (whatsInTheCrate == 1)
                             {
                                 BonusBomb bomb = new BonusBomb(game);
-                                bomb.position = new Point(x * 46, y * 46);
+                                bomb.position = new Point(x * tileSize, y * tileSize);
                                 objects.Add(bomb);
                             }
                             else if (whatsInTheCrate == 2)
                             {
                                 BonusSpeed speed = new BonusSpeed(game);
-                                speed.position = new Point(x * 46, y * 46);
+                                speed.position = new Point(x * tileSize, y * tileSize);
                                 objects.Add(speed);
                             }
                             else//nothing inside
@@ -72,11 +77,11 @@ namespace Bomberman
                             break;
                         case '1'://player1
                             mapGrid[x, y] = new Tile(game.pictureManager.sand, true, false);//on the spot will be sand
-                            game.player1.position = new Point(x * 46, y * 46);
+                            game.players[0].position = new Point(x * tileSize, y * tileSize);
                             break;
                         case '2'://player2
                             mapGrid[x, y] = new Tile(game.pictureManager.sand, true, false);//on the spot will be sand
-                            game.player2.position = new Point(x * 46, y * 46);
+                            game.players[1].position = new Point(x * tileSize, y * tileSize);
                             break;
                         default:
                             break;
@@ -96,7 +101,7 @@ namespace Bomberman
                     {
                         if (mapGrid[x,y] != null)//nenainicializovali jsme danou pozici (treba hrac)
                         {
-                            mapGrid[x, y].Draw(x * 46, y * 46, g);
+                            mapGrid[x, y].Draw(x * tileSize, y * tileSize, g);
                         }
                     }
                 }
@@ -114,14 +119,21 @@ namespace Bomberman
             foreach(GameObject obj in objects)
             {
                 obj.Step();
-                if(obj.pickable && game.player1.Collision(obj))
+                foreach(Player player in game.players)
+                {
+                    if(obj.pickable && player.Collision(obj))
+                    {
+                        player.Pick(obj);
+                    }
+                }
+                /*if(obj.pickable && game.player1.Collision(obj))
                 {
                     game.player1.Pick(obj);
                 }
                 else if (obj.pickable && game.player2.Collision(obj))
                 {
                     game.player2.Pick(obj);
-                }
+                }*/
             }
             foreach(GameObject obj in objectsToDelete)
             {
@@ -133,17 +145,12 @@ namespace Bomberman
                 objects.Add(obj);
             }
             objectsToAdd.Clear();
-            if(game.player1.dead || game.player2.dead)
-            {
-                game.gameOver = true;
-            }
-            game.player1.Step();
-            game.player2.Step();
+            
         }
-        public bool IsFree(int x, int y)
+        public bool IsStepable(int x, int y)
         {
-            int gridX = x / 46;
-            int gridY = y / 46;
+            int gridX = x / tileSize;
+            int gridY = y / tileSize;
             if(mapGrid[gridX, gridY].stepable)
             {
                 return true;
@@ -161,15 +168,9 @@ namespace Bomberman
         {
             objectsToAdd.Add(obj);
         }
-        public void FindCrate()
-        {
-            //TODO
-        }
         public List<GameObject> ReturnGameObjects()
         {
             return objects;
         }
-
-
     }
 }

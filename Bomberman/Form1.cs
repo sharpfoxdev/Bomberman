@@ -16,7 +16,6 @@ namespace Bomberman
         public Form1()
         {
             InitializeComponent();
-            //timer1.Start();
         }
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
@@ -26,14 +25,14 @@ namespace Bomberman
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            game.map.Step();
+            game.Step();
             pictureBox1.Refresh();
             if (game.gameOver)
             {
                 timer1.Stop();
-                if (game.player1.dead && game.player2.dead)
+                if (game.players[0].IsDead() && game.players[1].IsDead())
                     MessageBox.Show("Both of you died. There's no winner");
-                else if (game.player1.dead)
+                else if (game.players[0].IsDead())
                     MessageBox.Show("Player 1 is dead, player 2 wins");
                 else
                     MessageBox.Show("Player 2 is dead, player 1 wins");

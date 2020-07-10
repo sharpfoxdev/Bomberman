@@ -13,65 +13,78 @@ namespace Bomberman
     class Game
     {
         public Map map;
-        public Player player1;
-        public Player player2;
+        //private Player player1, player2;
+        public List<Player> players = new List<Player>();
         public bool gameOver;
         public PictureManager pictureManager;
+        public int tileSize = 46;
+        public int gameObjectSize = 32;
+        private string pathToPlan = "plan.txt";
+        private int amountOfPlayers = 2;
         public Game()
         {
             pictureManager = new PictureManager();
             pictureManager.LoadPictures();
-            player1 = new Player(this, 1);
-            player2 = new Player(this, 2);
-            map = new Map(this);
+            for(int i = 0; i < amountOfPlayers; i++)
+            {
+                Player player = new Player(this, i); //i = cislo hrace
+                players.Add(player);
+            }
+            /*player1 = new Player(this, 0);
+            player2 = new Player(this, 1);
+            players.Add(player1);
+            players.Add(player2);*/
+            map = new Map(this, tileSize, gameObjectSize, pathToPlan);
         }
         public void Draw(Graphics g)
         {
             map.Draw(g);
-            player1.Draw(g);
-            player2.Draw(g);
+            foreach(Player player in players) //vykresli vsechny hrace
+            {
+                player.Draw(g);
+            }
         }
         public void KeyDown(Keys key)
         {
             switch (key)
             {
                 case Keys.W:
-                    player1.orientation = Player.MovementDirection.UP;
-                    player1.picture = pictureManager.player1Up;
+                    players[0].orientation = Player.MovementDirection.UP;
+                    players[0].picture = pictureManager.player1Up;
                     break;
                 case Keys.S:
-                    player1.orientation = Player.MovementDirection.DOWN;
-                    player1.picture = pictureManager.player1Down;
+                    players[0].orientation = Player.MovementDirection.DOWN;
+                    players[0].picture = pictureManager.player1Down;
                     break;
                 case Keys.A:
-                    player1.orientation = Player.MovementDirection.LEFT;
-                    player1.picture = pictureManager.player1Left;
+                    players[0].orientation = Player.MovementDirection.LEFT;
+                    players[0].picture = pictureManager.player1Left;
                     break;
                 case Keys.D:
-                    player1.orientation = Player.MovementDirection.RIGHT;
-                    player1.picture = pictureManager.player1Right;
+                    players[0].orientation = Player.MovementDirection.RIGHT;
+                    players[0].picture = pictureManager.player1Right;
                     break;
                 case Keys.Space:
-                    player1.PlaceBomb();
+                    players[0].PlaceBomb();
                     break;
                 case Keys.Up:
-                    player2.orientation = Player.MovementDirection.UP;
-                    player2.picture = pictureManager.player2Up;
+                    players[1].orientation = Player.MovementDirection.UP;
+                    players[1].picture = pictureManager.player2Up;
                     break;
                 case Keys.Down:
-                    player2.orientation = Player.MovementDirection.DOWN;
-                    player2.picture = pictureManager.player2Down;
+                    players[1].orientation = Player.MovementDirection.DOWN;
+                    players[1].picture = pictureManager.player2Down;
                     break;
                 case Keys.Left:
-                    player2.orientation = Player.MovementDirection.LEFT;
-                    player2.picture = pictureManager.player2Left;
+                    players[1].orientation = Player.MovementDirection.LEFT;
+                    players[1].picture = pictureManager.player2Left;
                     break;
                 case Keys.Right:
-                    player2.orientation = Player.MovementDirection.RIGHT;
-                    player2.picture = pictureManager.player2Right;
+                    players[1].orientation = Player.MovementDirection.RIGHT;
+                    players[1].picture = pictureManager.player2Right;
                     break;
                 case Keys.ControlKey:
-                    player2.PlaceBomb();
+                    players[1].PlaceBomb();
                     break;
                 default:
                     break;
@@ -81,11 +94,23 @@ namespace Bomberman
         {
             if (key == Keys.W || key == Keys.S || key == Keys.A || key == Keys.D)
             {
-                player1.orientation = Player.MovementDirection.NONE;
+                players[0].orientation = Player.MovementDirection.NONE;
             }
             else if (key == Keys.Up || key == Keys.Down || key == Keys.Left || key == Keys.Right)
             {
-                player2.orientation = Player.MovementDirection.NONE;
+                players[1].orientation = Player.MovementDirection.NONE;
+            }
+        }
+        public void Step()
+        {
+            map.Step();
+            if (players[0].IsDead() || players[1].IsDead())
+            {
+                gameOver = true;
+            }
+            foreach(Player player in players) //move all players
+            {
+                player.Step();
             }
         }
     }

@@ -38,20 +38,21 @@ namespace Bomberman
                     }
                 }
             }
-            if (Collision(game.player1))
+            foreach(Player player in game.players)
             {
-                game.player1.dead = true;
+                if (Collision(player))
+                {
+                    player.Died();
+                }
+            }
+            /*if (Collision(game.player1))
+            {
+                game.player1.Died();
             }
             if (Collision(game.player2))
             {
-                game.player2.dead = true;
-            }
-            foreach(GameObject obj in objects)
-            {
-                
-                
-                //todo vymazat viditelne objekty pri kolizi
-            }
+                game.player2.Died();
+            }*/
         }
     }
 }

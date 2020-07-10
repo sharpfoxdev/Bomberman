@@ -23,14 +23,15 @@ namespace Bomberman
             timeTillDentonation--;
             if (timeTillDentonation <= 0)
             {
-                if(whoPlacedIt == 1)
+                game.players[whoPlacedIt].amountOfBombs++; //whoPlaced it tells us the number of player with which we can index into list of players
+                /*if(whoPlacedIt == 0)
                 {
                     game.player1.amountOfBombs++;//gives back the bomb
                 }
                 else
                 {
                     game.player2.amountOfBombs++;
-                }
+                }*/
                 game.map.DeleteObject(this);
                 Explosion explosion = new Explosion(game);
                 game.map.AddObject(explosion);
@@ -42,7 +43,7 @@ namespace Bomberman
                     explosionUp.position.X = position.X;//doesnt change on x axis
                     explosionUp.position.Y = position.Y - ((i + 1) * 46);//zacnu o jednu dal od stredu
                     game.map.AddObject(explosionUp);
-                    if (!game.map.IsFree(explosionUp.position.X, explosionUp.position.Y))//a tim skoncim jakmile dorazim k prvni prekazce
+                    if (!game.map.IsStepable(explosionUp.position.X, explosionUp.position.Y))//a tim skoncim jakmile dorazim k prvni prekazce
                     {
                         break;
                     }
@@ -53,7 +54,7 @@ namespace Bomberman
                     explosionDown.position.X = position.X;
                     explosionDown.position.Y = position.Y + ((i + 1) * 46);
                     game.map.AddObject(explosionDown);
-                    if (!game.map.IsFree(explosionDown.position.X, explosionDown.position.Y))
+                    if (!game.map.IsStepable(explosionDown.position.X, explosionDown.position.Y))
                     {
                         break;
                     }
@@ -64,7 +65,7 @@ namespace Bomberman
                     explosionLeft.position.X = position.X - ((i + 1) * 46);
                     explosionLeft.position.Y = position.Y;
                     game.map.AddObject(explosionLeft);
-                    if (!game.map.IsFree(explosionLeft.position.X, explosionLeft.position.Y))
+                    if (!game.map.IsStepable(explosionLeft.position.X, explosionLeft.position.Y))
                     {
                         break;
                     }
@@ -75,7 +76,7 @@ namespace Bomberman
                     explosionUp.position.X = position.X + ((i + 1) * 46);
                     explosionUp.position.Y = position.Y;
                     game.map.AddObject(explosionUp);
-                    if (!game.map.IsFree(explosionUp.position.X, explosionUp.position.Y))
+                    if (!game.map.IsStepable(explosionUp.position.X, explosionUp.position.Y))
                     {
                         break;
                     }

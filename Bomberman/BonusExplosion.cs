@@ -17,14 +17,21 @@ namespace Bomberman
         }
         public override void Step()
         {
-            if (Collision(game.player1))
+            foreach(Player player in game.players)//zjistim, ktery z hracu sebral bonus
+            {
+                if (Collision(player))
+                {
+                    player.bombStrenght++;
+                }
+            }
+            /*if (Collision(game.player1))
             {
                 game.player1.bombStrenght++;
             }
             else if (Collision(game.player2))
             {
                 game.player2.bombStrenght++;
-            }
+            }*/
         }
     }
 }

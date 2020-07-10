@@ -11,8 +11,6 @@ namespace Bomberman
     {
         public Bitmap picture;
         public Point position;
-        public int directionX;
-        public int directionY;
         public int speed;
         protected Game game;
         public bool pickable { get; set; }
