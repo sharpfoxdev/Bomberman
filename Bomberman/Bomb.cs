@@ -11,8 +11,8 @@ namespace Bomberman
     {
         private int bombStrenght;
         private int timeTillDentonation = 200;
-        private int whoPlacedIt;
-        public Bomb(Game game, int bombStrenght, int whoPlacedIt)
+        private Player whoPlacedIt;
+        public Bomb(Game game, int bombStrenght, Player whoPlacedIt)
         {
             this.game = game;
             visible = true;
@@ -26,7 +26,7 @@ namespace Bomberman
             timeTillDentonation--;
             if (timeTillDentonation <= 0)
             {
-                game.players[whoPlacedIt].amountOfBombs++; //whoPlaced it tells us the number of player with which we can index into list of players
+                whoPlacedIt.amountOfBombs++; //whoPlaced it tells us the number of player with which we can index into list of players
                 game.map.DeleteObject(this);
                 Explosion explosion = new Explosion(game);
                 game.map.AddObject(explosion);

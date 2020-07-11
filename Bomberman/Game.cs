@@ -20,23 +20,24 @@ namespace Bomberman
     }
     class Game
     {
-        public Map map { get; set; }
-        public List<Player> players = new List<Player>();
-        public bool gameOver { get; set; }
-        public PictureManager pictureManager { get; }
         public int tileSize { get; set; }
-        public int gameObjectSize { get; set; }
+        public int playerSize { get; set; }
         private string pathToPlan = "plan.txt";
         private int amountOfPlayers = 2;
+        public bool gameOver { get; set; }
+        public Map map { get; }
+        public List<Player> players = new List<Player>();
+        public PictureManager pictureManager { get; }
+
         public Game()
         {
             tileSize = 46;
-            gameObjectSize = 32;
+            playerSize = 32;
             pictureManager = new PictureManager();
             pictureManager.LoadPictures();
             for(int i = 0; i < amountOfPlayers; i++)
             {
-                Player player = new Player(this, i); //i = cislo hrace
+                Player player = new Player(this, i); //i = gives player its number
                 players.Add(player);
             }
             map = new Map(this, tileSize, pathToPlan);

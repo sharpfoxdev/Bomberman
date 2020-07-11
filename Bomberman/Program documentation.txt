@@ -1,0 +1,108 @@
+This game is a clone of bomberman game for two players. The code consists of several classes in separate files. 
+
+# Form1.cs
+## partial class Form1
+	- entry point of the code, handles window and initialises game
+
+	public Form1():
+		- initialises window
+		- makes new instance of game
+
+	private void pictureBox1_Paint()
+		- tells the game to draw itself (it further tells other instances to draw themselves)
+
+	private void timer1_Tick()
+		- is called regularly thus making game loop
+		- when game is over, the timer is stopped and MessageBox displays who won
+
+	private void Form1_KeyDown()
+		- tells the game which key was pressed
+
+	private void Form1_KeyUp()
+		- tells the game which key was lifted
+
+
+# Game.cs
+	## enum Direction
+		- used by class Game and class Player to determine orientation and movement of the player. Also used by class Bomb to initialise instances of class Explosion
+
+	## class Game
+		- central class of the code, its instance is passed to all of the instances of other classes, thus they can comunicate via this Game instance (which was initialised in Form1)
+
+		fields and properties:
+			+tileSize //size in px of the tiles (sand, wall, crate), bombs, explosion and bonuses
+			+PlayerSize //size in px of game players (they are slightly smaller than the tiles for easier movement in the game)
+			-pathToPlan //path to where the plan of mapgrid is stored
+			-amountOfPlayers
+			+bool gameOver //true if game is over
+
+			+Map map //instance of map, does all the map related stuff
+			+List<Player> players //stores all players in list (so we can iterate through them)
+			+PictureManager pictureManager //knows pictures of all sprites
+
+
+		public Game()
+			- makes instances of players, map and picture manager, sets tileSize and PlyerSize
+
+		public void Draw(Graphics g)
+			- tells map and all players to draw themselves, is called from Form1
+
+		public void KeyDown(Keys key)
+			- called from Form1, sets player's Direction and its picture according to pressed key or tells the player to place bomb
+
+		public void KeyUp(Keys key)
+			- sets Direction of player to NONE when the given key is lifted (because of that the player will stop moving)
+
+		public void Step()
+			- called from Form1 from timer method regularly
+			- tells map to do step, checks for game over and then tells all players to do step as well
+
+# Map.cs
+## class Map
+	- takes care of loading map, generating bonuses, drawing everything except for players, telling objects (exept for players) to do step, stores map grid and gives information about it, deletes and adds objects into map when needed
+
+	fields and properties:
+		+Tile[,] mapGrid //2D array of Tiles (sand, wall, crate)
+		-List<GameObject>objects, objectsToAdd, objectsToDelete //lists of objects, objects that appeared and objects that disappeared during the step
+		-int width, height //size of mapGrid
+		-Random generator //for generating bonuses into crates randomly
+		-Game game //to comunicate with players and pictureManager through Game
+		-tileSize //size in px of tiles, used for their drawing in correct places
+
+	public Map(Game game, int tileSize, string pathToPlan)
+		-called from Game, has just one instance
+		-opens file in pathToPlan, reads the width, height and the plan itself, makes instances of Tiles according to the letter in the plan and adds them into mapGrid into correct place
+		-generates with generator the contents of crates that will become visible when the crate is destroyed
+			-generator generates random int in small range and according to the generated number there will be placed either bonusBomb, BomusSpeed, BonusExplosion or nothing at all
+		-also tells players their position
+
+	public void Draw(Graphics g)
+		- called from Game
+		- draws all tiles in the correct position using tileSize
+		- tells all objects in objects (bombs, explosions, bonuses) to draw themselves, if they are visible (for example bonus in the crate isnt visible thus wont be drawn)
+
+	public void Step()
+		- called from Game
+		- tells all objects in objects to do step and then checks if those objects colide with any of the players - if yes and the object is pickable, the player will pick it (and the object will later move into objectsToDelete)
+		- then it iterates through objectsToDelete and deletes all of those in objects, then clears objectsToDelete
+		- finally it does iterates through objectsToAdd and adds all of those into objects, then clears objectsToAdd
+
+	public bool IsStepable(int x, int y)
+		- called mostly from Player when he checks for movement possibilities
+		- gets the coordinates in window, matches this coordinates into mapGrid and returns whether the Tile on given position is stepable or not
+
+	public bool IsDestroyable(int x, int y)
+		- called from Bomb when it checks if the explosion reached crate
+		- same like IsStepable(), just checks if the tile is destroyable instead
+
+	public void DeleteObject(GameObject obj)
+		- called from explosion (when it destroys something), bomb (when it disappears after explosion) and player (when it picks something)
+		- adds object into objectsToDelete
+
+	public void AddObject(GameObject obj)
+		- called from Player when it makes Bomb (adds Bomb) and from Bomb when it makes Explosion (Adds Explosion)
+		- adds object into objectsToAdd
+
+	public List<GameObject> ReturnGameObjects()
+		- called from Explosion to check for its collision with any of the objects
+		- returns objects
