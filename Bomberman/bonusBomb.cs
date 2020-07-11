@@ -8,8 +8,9 @@ namespace Bomberman
 {
     class BonusBomb : GameObject
     {
-        public BonusBomb(Game game) : base(game)
+        public BonusBomb(Game game)
         {
+            this.game = game;
             picture = game.pictureManager.bonusBomb;
             visible = false;
             pickable = true;

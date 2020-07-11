@@ -20,16 +20,18 @@ namespace Bomberman
     }
     class Game
     {
-        public Map map;
+        public Map map { get; set; }
         public List<Player> players = new List<Player>();
-        public bool gameOver;
-        public PictureManager pictureManager;
-        public int tileSize = 46;
-        public int gameObjectSize = 32;
+        public bool gameOver { get; set; }
+        public PictureManager pictureManager { get; }
+        public int tileSize { get; set; }
+        public int gameObjectSize { get; set; }
         private string pathToPlan = "plan.txt";
         private int amountOfPlayers = 2;
         public Game()
         {
+            tileSize = 46;
+            gameObjectSize = 32;
             pictureManager = new PictureManager();
             pictureManager.LoadPictures();
             for(int i = 0; i < amountOfPlayers; i++)
@@ -37,7 +39,7 @@ namespace Bomberman
                 Player player = new Player(this, i); //i = cislo hrace
                 players.Add(player);
             }
-            map = new Map(this, tileSize, gameObjectSize, pathToPlan);
+            map = new Map(this, tileSize, pathToPlan);
         }
         public void Draw(Graphics g)
         {
@@ -107,7 +109,7 @@ namespace Bomberman
         public void Step()
         {
             map.Step();
-            if (players[0].IsDead() || players[1].IsDead())
+            if (players[0].dead || players[1].dead)
             {
                 gameOver = true;
             }

@@ -12,8 +12,11 @@ namespace Bomberman
         private int bombStrenght;
         private int timeTillDentonation = 200;
         private int whoPlacedIt;
-        public Bomb(Game game, int bombStrenght, int whoPlacedIt) : base(game)
+        public Bomb(Game game, int bombStrenght, int whoPlacedIt)
         {
+            this.game = game;
+            visible = true;
+            pickable = false;
             this.whoPlacedIt = whoPlacedIt;
             this.bombStrenght = bombStrenght;
             picture = game.pictureManager.bomb;
@@ -43,18 +46,18 @@ namespace Bomberman
                 {
                     case Direction.UP:
                         explosion.position.X = position.X;//doesnt change on x axis
-                        explosion.position.Y = position.Y - ((i + 1) * 46);
+                        explosion.position.Y = position.Y - ((i + 1) * game.tileSize);
                         break;
                     case Direction.DOWN:
                         explosion.position.X = position.X;
-                        explosion.position.Y = position.Y + ((i + 1) * 46);
+                        explosion.position.Y = position.Y + ((i + 1) * game.tileSize);
                         break;
                     case Direction.LEFT:
-                        explosion.position.X = position.X - ((i + 1) * 46);
+                        explosion.position.X = position.X - ((i + 1) * game.tileSize);
                         explosion.position.Y = position.Y;
                         break;
                     case Direction.RIGHT:
-                        explosion.position.X = position.X + ((i + 1) * 46);
+                        explosion.position.X = position.X + ((i + 1) * game.tileSize);
                         explosion.position.Y = position.Y;
                         break;
                     default:

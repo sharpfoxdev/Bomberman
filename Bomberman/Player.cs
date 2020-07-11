@@ -12,17 +12,25 @@ namespace Bomberman
     class Player: GameObject
     {
         
-        public int bombStrenght = 1;
+        public int bombStrenght { get; set; }
+        public bool dead { get; set; }
+        public Direction orientation { get; set; }
+        public int amountOfBombs { get; set; }
+        public int timeSpeededUp { get; set; }
+        int speed;
         int numberOfPlayer;
-        private bool dead = false;
-        public Direction orientation = Direction.NONE;
-        public int amountOfBombs = 1;
-        public int timeSpeededUp;
-        List<GameObject> objects = new List<GameObject>();
-        public Player(Game game, int numberOfPlayer) : base(game)//BASE hra?
+        public Player(Game game, int numberOfPlayer) //: base(game)//BASE hra?
         {
+            this.game = game;
+            visible = true;
+            pickable = false;
             this.numberOfPlayer = numberOfPlayer;
-            if(numberOfPlayer == 0)
+            bombStrenght = 1;
+            dead = false;
+            orientation = Direction.NONE;
+            amountOfBombs = 1;
+            speed = 2;
+            if (numberOfPlayer == 0)
             {
                 picture = game.pictureManager.player1Down;
             }
@@ -30,25 +38,10 @@ namespace Bomberman
             {
                 picture = game.pictureManager.player2Down;
             }
-            speed = 2;
-        }
-        public bool IsDead()
-        {
-            return dead;
-        }
-        public void Died()
-        {
-            dead = true;
         }
         public void Pick(GameObject obj)
         {
-            objects.Add(obj);
             game.map.DeleteObject(obj); //we picked it so it disappears
-        }
-        public override void Draw(Graphics g)//was missing system drawing in the top of source
-        {
-            base.Draw(g);
-            //maybe TODO
         }
         public override void Step()
         {
@@ -63,22 +56,23 @@ namespace Bomberman
             }
             switch (orientation)
             {
+                //check whether both corners fit in where Im walking
                 case Direction.DOWN:
-                    if(game.map.IsStepable(position.X, position.Y + speed + 31) && game.map.IsStepable(position.X + 31, position.Y + speed + 31))//check if both corners fit in where Im walking
+                    if (game.map.IsStepable(position.X, position.Y + speed + (game.gameObjectSize - 1)) && game.map.IsStepable(position.X + (game.gameObjectSize - 1), position.Y + speed + (game.gameObjectSize - 1)))
                     {
                         position.Y += speed;
                     }
                     break;
                 case Direction.UP:
-                    if (game.map.IsStepable(position.X, position.Y - speed) && game.map.IsStepable(position.X + 31, position.Y - speed))
+                    if (game.map.IsStepable(position.X, position.Y - speed) && game.map.IsStepable(position.X + (game.gameObjectSize - 1), position.Y - speed))
                         position.Y -= speed;
                     break;
                 case Direction.LEFT:
-                    if (game.map.IsStepable(position.X - speed, position.Y) && game.map.IsStepable(position.X - speed, position.Y + 31))
+                    if (game.map.IsStepable(position.X - speed, position.Y) && game.map.IsStepable(position.X - speed, position.Y + (game.gameObjectSize - 1)))
                         position.X -= speed;
                     break;
                 case Direction.RIGHT:
-                    if (game.map.IsStepable(position.X + speed + 31, position.Y) && game.map.IsStepable(position.X + speed + 31, position.Y + 31))
+                    if (game.map.IsStepable(position.X + speed + (game.gameObjectSize - 1), position.Y) && game.map.IsStepable(position.X + speed + (game.gameObjectSize - 1), position.Y + (game.gameObjectSize - 1)))
                         position.X += speed;
                     break;
                 case Direction.NONE:
@@ -93,7 +87,7 @@ namespace Bomberman
             {
                 amountOfBombs--;
                 Bomb bomb = new Bomb(game, bombStrenght, numberOfPlayer);
-                bomb.position = new Point(((int)Math.Round((double)position.X / 46)) * 46, ((int)Math.Round((double)position.Y / 46)) * 46); //to fit in the grid
+                bomb.position = new Point(((int)Math.Round((double)position.X / game.tileSize)) * game.tileSize, ((int)Math.Round((double)position.Y / game.tileSize)) * game.tileSize); //to fit in the grid
                 game.map.AddObject(bomb);
             } 
         }

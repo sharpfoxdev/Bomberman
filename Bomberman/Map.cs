@@ -12,20 +12,19 @@ namespace Bomberman
 {
     class Map
     {
-        public Tile[,] mapGrid;
+        public Tile[,] mapGrid { get; set; }
         private List<GameObject> objects = new List<GameObject>();
         private List<GameObject> objectsToAdd = new List<GameObject>();
         private List<GameObject> objectsToDelete = new List<GameObject>();
-        int width;
-        int height;
-        Random generator = new Random();
+        private int width;
+        private int height;
+        private Random generator = new Random();
         private Game game;
-        private int tileSize, gameObjectSize;
-        public Map(Game game, int tileSize, int gameObjectSize, string pathToPlan)
+        private int tileSize;
+        public Map(Game game, int tileSize, string pathToPlan)
         {
             this.game = game;
             this.tileSize = tileSize;
-            this.gameObjectSize = gameObjectSize;
 
             System.IO.StreamReader sr = new System.IO.StreamReader(pathToPlan);
 
@@ -84,10 +83,9 @@ namespace Bomberman
                             game.players[1].position = new Point(x * tileSize, y * tileSize);
                             break;
                         default:
+                            mapGrid[x, y] = new Tile(game.pictureManager.sand, true, false); //neznamy znak v planu
                             break;
                     }
-
-
                 }
             }
 
@@ -99,10 +97,7 @@ namespace Bomberman
                 {
                     for (int x = 0; x < mapGrid.GetLength(0); x++)
                     {
-                        if (mapGrid[x,y] != null)//nenainicializovali jsme danou pozici (treba hrac)
-                        {
                             mapGrid[x, y].Draw(x * tileSize, y * tileSize, g);
-                        }
                     }
                 }
             }

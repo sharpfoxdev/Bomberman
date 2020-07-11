@@ -30,9 +30,9 @@ namespace Bomberman
             if (game.gameOver)
             {
                 timer1.Stop();
-                if (game.players[0].IsDead() && game.players[1].IsDead())
+                if (game.players[0].dead && game.players[1].dead)
                     MessageBox.Show("Both of you died. There's no winner");
-                else if (game.players[0].IsDead())
+                else if (game.players[0].dead)
                     MessageBox.Show("Player 1 is dead, player 2 wins");
                 else
                     MessageBox.Show("Player 2 is dead, player 1 wins");

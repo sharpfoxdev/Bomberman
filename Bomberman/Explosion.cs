@@ -9,9 +9,12 @@ namespace Bomberman
     class Explosion : GameObject
     {
         private int timeOfExploding = 50;
-        public Explosion(Game game) : base(game)
+        public Explosion(Game game)
         {
+            this.game = game;
             picture = game.pictureManager.explosion;
+            visible = true;
+            pickable = false;
         }
         
         public override void Step()
@@ -19,9 +22,9 @@ namespace Bomberman
             timeOfExploding--;
             List<GameObject> objects = game.map.ReturnGameObjects();
 
-            if (!game.map.mapGrid[position.X / 46, position.Y / 46].stepable && game.map.mapGrid[position.X / 46, position.Y / 46].destroyable)
+            if (!game.map.mapGrid[position.X / game.tileSize, position.Y / game.tileSize].stepable && game.map.mapGrid[position.X / game.tileSize, position.Y / game.tileSize].destroyable)
             {
-                game.map.mapGrid[position.X / 46, position.Y / 46] = new Tile(game.pictureManager.sand, true, false);//becomes sand
+                game.map.mapGrid[position.X / game.tileSize, position.Y / game.tileSize] = new Tile(game.pictureManager.sand, true, false);//becomes sand
             }
             if (timeOfExploding <= 0)
             {
@@ -43,7 +46,7 @@ namespace Bomberman
             {
                 if (Collision(player))
                 {
-                    player.Died();
+                    player.dead = true;
                 }
             }
         }

@@ -11,18 +11,10 @@ namespace Bomberman
     {
         public Bitmap picture;
         public Point position;
-        public int speed;
         protected Game game;
         public bool pickable { get; set; }
         public bool visible { get; set; }
-        protected static Random generator = new Random();
-        public GameObject(Game game)
-        {
-            visible = true;
-            pickable = false;
-            this.game = game;
-        }
-        public virtual void Draw(Graphics g)
+        public void Draw(Graphics g)
         {
             g.DrawImage(picture, position); //sprite draws itself, is called from map draw
         }

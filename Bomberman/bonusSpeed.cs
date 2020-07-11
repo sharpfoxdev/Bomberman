@@ -8,7 +8,7 @@ namespace Bomberman
 {
     class BonusSpeed : GameObject
     {
-        public BonusSpeed(Game game) : base(game)
+        public BonusSpeed(Game game)
         {
             this.game = game;
             picture = game.pictureManager.bonusSpeed;
