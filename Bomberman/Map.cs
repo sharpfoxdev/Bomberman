@@ -116,9 +116,9 @@ namespace Bomberman
                 obj.Step();
                 foreach(Player player in game.players)
                 {
-                    if(obj.pickable && player.Collision(obj))
+                    if(obj.pickable && player.Collision(obj))//player picked bonus
                     {
-                        player.Pick(obj);
+                        DeleteObject(obj);
                     }
                 }
             }

@@ -38,10 +38,6 @@ namespace Bomberman
                 picture = game.pictureManager.player2Down;
             }
         }
-        public void Pick(GameObject obj)
-        {
-            game.map.DeleteObject(obj); //we picked it so it disappears
-        }
         public override void Step()
         {
             if(timeSpeededUp > 0)

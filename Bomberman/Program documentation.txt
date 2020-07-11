@@ -83,7 +83,7 @@ This game is a clone of bomberman game for two players. The code consists of sev
 
 	public void Step()
 		- called from Game
-		- tells all objects in objects to do step and then checks if those objects colide with any of the players - if yes and the object is pickable, the player will pick it (and the object will later move into objectsToDelete)
+		- tells all objects in objects to do step and then checks if those objects colide with any of the players - if yes and the object is pickable, the player will "pick" it and the object moves into objectsToDelete
 		- then it iterates through objectsToDelete and deletes all of those in objects, then clears objectsToDelete
 		- finally it does iterates through objectsToAdd and adds all of those into objects, then clears objectsToAdd
 
@@ -96,7 +96,7 @@ This game is a clone of bomberman game for two players. The code consists of sev
 		- same like IsStepable(), just checks if the tile is destroyable instead
 
 	public void DeleteObject(GameObject obj)
-		- called from explosion (when it destroys something), bomb (when it disappears after explosion) and player (when it picks something)
+		- called from explosion (when it destroys something), bomb (when it disappears after explosion) or from here when the player picks bonus
 		- adds object into objectsToDelete
 
 	public void AddObject(GameObject obj)
