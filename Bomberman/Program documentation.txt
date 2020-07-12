@@ -189,3 +189,46 @@ This game is a clone of bomberman game for two players. The code consists of sev
 		- if the place where we want to place new explosion is stepable (sand), then we put there the explosion, add it to map's objects and then we continue in generating another explosion in the given direction
 		- if the place is destroyable (crate), then we put explosion on its place, add explosion in maps's objects but then we stop further creating new explosions
 		- if the place is nor stepable nor destroyable (wall), we stop generating new explosions in this direction
+
+# Explosion.cs
+## class Explosion : GameObject
+	- made by bomb, stays for a bit in place, destroys visible bonuses, kills players, destroys crates
+	- fields and properties:
+		-int timeOfExploding //gets smaller every step, upon reaching zero the explosion disappears
+
+	public Explosion(Game game)
+		- gets its picture, is visible, isnt pickable
+
+	public override void Step()
+		- timeOfExploding gets smaller
+		- checks if colides with any of the players (player stepped in the explosion) - if yes, then the player is dead
+		- when timeOfExploding reaches zero
+			- checks whether the tile on the explosions place is destroyable and not stepable (crate)
+				-if yes, puts sand instead of the crate in the mapGrid
+			- gets list of all objects from map
+			- deletes itself
+			- checks all objects from map
+				- if the object collides with the explosion, is visible and pickable (bonus), then it will be deleted (game.map.DeleteObject)
+				- if the object colides with explosion and isnt visible, then it becomes visible (bonus that was in the crate but now the crate is destroyed)
+
+# BonusBomb.cs
+## class BonusBomb : GameObject
+	
+	public BonusBomb(Game game)
+		- gets its picture, is not visible (until the explosion makes it visible), is pickable
+	public override void Step()
+		- iterates through players, checks if it colides with any of them, if yes, his amountOfBombs gets higher (can place one more bomb at once)
+
+# BonusExplosion.cs
+## class BonusExplosion : GameObject
+	public BonusExplosion(Game game)
+		- gets its picture, is not visible (until the explosion makes it visible), is pickable
+	public override void Step()
+		- iterates through players, checks if it colides with any of them, if yes, his bombStrenght gets higher (detonations of bombs they place is greater)
+
+# BonusSpeed.cs
+## class BonusSpeed : GameObject
+	public BonusSpeed(Game game)
+		- gets its picture, is not visible (until the explosion makes it visible), is pickable
+	public override void Step()
+		- iterates through players, checks if it colides with any of them, if yes, his timeSpeededUp is set to non zero value (has temporary speed boost)

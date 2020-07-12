@@ -20,14 +20,21 @@ namespace Bomberman
         public override void Step()
         {
             timeOfExploding--;
-            List<GameObject> objects = game.map.ReturnGameObjects();
 
-            if (!game.map.mapGrid[position.X / game.tileSize, position.Y / game.tileSize].stepable && game.map.mapGrid[position.X / game.tileSize, position.Y / game.tileSize].destroyable)
+            foreach (Player player in game.players)
             {
-                game.map.mapGrid[position.X / game.tileSize, position.Y / game.tileSize] = new Tile(game.pictureManager.sand, true, false);//becomes sand
+                if (Collision(player))
+                {
+                    player.dead = true;
+                }
             }
             if (timeOfExploding <= 0)
             {
+                if (!game.map.mapGrid[position.X / game.tileSize, position.Y / game.tileSize].stepable && game.map.mapGrid[position.X / game.tileSize, position.Y / game.tileSize].destroyable)
+                {
+                    game.map.mapGrid[position.X / game.tileSize, position.Y / game.tileSize] = new Tile(game.pictureManager.sand, true, false);//becomes sand
+                }
+                List<GameObject> objects = game.map.ReturnGameObjects();
                 game.map.DeleteObject(this);
                 foreach(GameObject obj in objects)
                 {
@@ -41,13 +48,7 @@ namespace Bomberman
                         obj.visible = true;
                     }
                 }
-            }
-            foreach(Player player in game.players)
-            {
-                if (Collision(player))
-                {
-                    player.dead = true;
-                }
+
             }
         }
     }
