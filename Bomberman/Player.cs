@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Configuration;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Bomberman
 {
@@ -17,13 +18,12 @@ namespace Bomberman
         public int amountOfBombs { get; set; }
         public int timeSpeededUp { get; set; }
         private int speed;
-        private int numberOfPlayer;
         public Player(Game game, int numberOfPlayer) //: base(game)//BASE hra?
         {
             this.game = game;
             visible = true;
             pickable = false;
-            this.numberOfPlayer = numberOfPlayer;
+            //this.numberOfPlayer = numberOfPlayer;
             bombStrenght = 1;
             dead = false;
             orientation = Direction.NONE;

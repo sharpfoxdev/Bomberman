@@ -14,7 +14,6 @@ namespace Bomberman
         public void LoadSounds()
         {
             backgroundMusic = new SoundPlayer("soundtrack.wav");
-            //bomb = new SoundPlayer("bomb.wav");
         }
         public void PlayBomb()
         {

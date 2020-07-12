@@ -40,7 +40,7 @@ namespace Bomberman
             soundManager.backgroundMusic.PlayLooping();
             for(int i = 0; i < amountOfPlayers; i++)
             {
-                Player player = new Player(this, i); //i = gives player its number
+                Player player = new Player(this, i); //i = gives player its number, also gives him correct textbox
                 players.Add(player);
             }
             map = new Map(this, tileSize, pathToPlan);

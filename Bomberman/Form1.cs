@@ -37,11 +37,11 @@ namespace Bomberman
                 timer1.Stop();
                 game.soundManager.backgroundMusic.Stop();
                 if (game.players[0].dead && game.players[1].dead) //who won
-                    MessageBox.Show("Both of you died. There's no winner");
+                    MessageBox.Show("Both of you died. There's no winner.");
                 else if (game.players[0].dead)
-                    MessageBox.Show("Player 1 is dead, player 2 wins");
+                    MessageBox.Show("Scientist is dead, wizard wins.");
                 else
-                    MessageBox.Show("Player 2 is dead, player 1 wins");
+                    MessageBox.Show("Wizard is dead, scientist wins.");
             }
         }
 

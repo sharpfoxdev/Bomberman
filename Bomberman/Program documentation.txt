@@ -39,10 +39,12 @@ This game is a clone of bomberman game for two players. The code consists of sev
 			+Map map //instance of map, does all the map related stuff
 			+List<Player> players //stores all players in list (so we can iterate through them)
 			+PictureManager pictureManager //knows pictures of all sprites
+			+SoundManager //can play sounds
 
 
 		public Game()
-			- makes instances of players, map and picture manager, sets tileSize and PlyerSize
+			- makes instances of players, map sound manager and picture manager, sets tileSize and PlayerSize
+			- starts to play backgroundMusic on loop
 
 		public void Draw(Graphics g)
 			- tells map and all players to draw themselves, is called from Form1
@@ -106,3 +108,84 @@ This game is a clone of bomberman game for two players. The code consists of sev
 	public List<GameObject> ReturnGameObjects()
 		- called from Explosion to check for its collision with any of the objects
 		- returns objects
+
+# GameObject.cs
+## class GameObject
+	- abstract class, all game objects (bonuses, explosions, players, bombs) inherit from it
+
+	- fields and properties:
+		+Bitmap picture //stores png picture of the object
+		+Point position //position of up left corner of object from the up left corner of picturebox, in pixels
+		protected Game game //all game objects know the same game instance
+		+bool pickable //true if the player can pick it
+		+bool visible //true if the game object should be drawn
+
+	public void Draw(Graphics g)
+		- uses graphics to draw Bitmap picture into Point position
+
+	public abstract void Step()
+		- all of the objects can make step, each game objects has here code that is executed every step the game makes
+
+	public bool Collision(GameObject obj)
+		- checks for collision with another game object
+		- returns true if this object and the object given as parameter colide
+
+# Player.cs
+## class Player : GameObject
+	- takes care about players movement and placing bombs
+
+	- fields and properites:
+		+int bombStrenght //strenght of detonation
+		+bool dead //true if dead
+		+Direction orientation //which way is player facing
+		+int amountOfBombs //how many bombs can player place at once
+		+int timeSpeededUp //how much time is left when the player moves faster due to speed bonus
+		-int speed //how many px does the player move itself every step
+
+	public Player(Game game, int numberOfPlayer)
+		- called from game
+		- is visible on map, cant be picked
+		- bombStrenght is 1 in the beginning, rises when player picks BonusExplosion
+		- orientation = Direction.NONE //doesnt move
+		- amountOfBombs is 1 in the beginning, rises when player pics BonusBomb
+		- speed in the beginning is 2 px, temporary rises when player picks BonusSpeed
+		- checks which player he is and loads correct picture
+
+	public override void Step()
+		- checks what speed he is supposed move
+		- then if possible moves in direction of set orientation (asks game.map if he can step on the new position)
+		- if orientation = Direction.NONE then doesnt move (when no key is pressed that would move it)
+
+	public void PlaceBomb()
+		- if he still has some bombs to place (amountOfBombs is not zero) then he loses one bomb and places it on position where he is standing (but changes the position slightly so the bomb will be placed in the grid on one spot)
+		- player passes game instance, bombStrenght and itself to the new instance of bomb (so it knows game, how strng it is and who placed it)
+		- adds bomb into map's objects so it can now also make steps
+
+# Bomb.cs
+## Bomb : GameObject
+	- created by player, when the time comes, it detonates and makes new instances of Explosion
+
+	- fields and properties:
+		-int bombStrenght //tells how many Explosion instances it should make in each direction
+		-int timeTillDetonation //gets smaller every step until it reaches zero and the bomb explodes
+		-Player whoPlacedIt //so it can return the bomb to the player after it detonates
+
+	public Bomb(Game game, int bombStrenght, Player whoPlacedIt)
+		- initialises fields, is visible but not pickable
+		- loads its picture
+
+	public override void Step()
+		- every step timeTillDetonation gets smaller
+		- when it reaches zero:
+			- sound of explosion is played
+			- player who placed this bomb gets one bomb back
+			- this bomb disappears (game.map.DeleteObject())
+			- in its spot there appears explosion
+			- then MakeExplosion() is called that makes new Explosions are in all four directions accoring to the bombStrenght
+
+	private MakeExplosion(Direction direction)
+		- makes new Explosions in the given direction and with given bombStrenght
+		- from the direction and the bomb position calculates positions of new Explosions
+		- if the place where we want to place new explosion is stepable (sand), then we put there the explosion, add it to map's objects and then we continue in generating another explosion in the given direction
+		- if the place is destroyable (crate), then we put explosion on its place, add explosion in maps's objects but then we stop further creating new explosions
+		- if the place is nor stepable nor destroyable (wall), we stop generating new explosions in this direction
