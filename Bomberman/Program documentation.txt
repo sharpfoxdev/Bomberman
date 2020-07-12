@@ -231,4 +231,58 @@ This game is a clone of bomberman game for two players. The code consists of sev
 	public BonusSpeed(Game game)
 		- gets its picture, is not visible (until the explosion makes it visible), is pickable
 	public override void Step()
-		- iterates through players, checks if it colides with any of them, if yes, his timeSpeededUp is set to non zero value (has temporary speed boost)
+		- iterates through players, checks if it colides with any of them, if yes, his timeSpeededUp is set to positive value (has temporary speed boost)
+
+# Tile.cs
+## class Tile
+	- takes care of tiles (sand, crate, wall)
+	- sand - not destroyable, stepable
+	- wall - not destroyable, not stepable
+	- crate - destroyable, not stepable
+
+	- fields and properties:
+		-Bitmap picture //stores picture of the tile
+		+bool destroyable //true if explosion can destroy this tile
+		+bool stepable //true if player can step on this tile
+
+	public Tile(Game game, bool stepable, bool destroyable)
+		- called from map when making grid and from explosion when it makes sand tile in the place of destroyed crate
+		- sets picture, destroyable and stepable
+
+	public void Draw(int x, int y, Graphics g)
+		- draws the tile on given spot
+
+# PictureManager.cs
+## class PictureManager
+	- knows pictures of all sprites and tiles
+
+	- properties:
+		+Bitmap wall, crate, sand
+		+Bitmap player1Up, player1Down, player1Left, player1Right
+		+Bitmap player2Up, player2Down, player2Left, player2Right
+		+Bitmap bomb, explosion
+		+Bitmap bonusExplosion, bonusSpeed, bonusBomb
+
+	public void LoadPictures()
+		- called from game in its constructor
+		- loads all the sprites and tiles from path and stores them
+
+# SoundManager.cs
+## class SoundManager
+	- knows all the sounds used in game
+	- properties:
+		+SoundPlayer backgroundMusic
+
+	public void LoadSounds()
+		- loads background music from path and stores it
+		- called in the constructor of the Game
+
+	public void PlayBomb()
+		- plays bomb sound using MediaPlayer class
+		- winforms doesn't usually want to play two sounds at once, that's why I'm using MediaPlayer instance instead of another instance of SoundPlayer
+		- if I used two instances of SoundPlayer, it would stop background music when the sound of bomb is played
+		- called from Bomb when it's instance detonates
+
+	public void PlayBonus()
+		- same like PlayBomb(), it just plays sound of bonus
+		- called from Map when bonus is picked
