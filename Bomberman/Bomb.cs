@@ -26,6 +26,7 @@ namespace Bomberman
             timeTillDentonation--;
             if (timeTillDentonation <= 0)
             {
+                game.soundManager.PlayBomb();
                 whoPlacedIt.amountOfBombs++; //whoPlaced it tells us the number of player with which we can index into list of players
                 game.map.DeleteObject(this);
                 Explosion explosion = new Explosion(game);

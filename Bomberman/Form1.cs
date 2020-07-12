@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -34,6 +35,7 @@ namespace Bomberman
             if (game.gameOver)
             {
                 timer1.Stop();
+                game.soundManager.backgroundMusic.Stop();
                 if (game.players[0].dead && game.players[1].dead) //who won
                     MessageBox.Show("Both of you died. There's no winner");
                 else if (game.players[0].dead)

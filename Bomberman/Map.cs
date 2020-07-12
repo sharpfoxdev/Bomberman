@@ -118,6 +118,7 @@ namespace Bomberman
                 {
                     if(obj.pickable && player.Collision(obj))//player picked bonus
                     {
+                        game.soundManager.PlayBonus();
                         DeleteObject(obj);
                     }
                 }

@@ -28,13 +28,16 @@ namespace Bomberman
         public Map map { get; }
         public List<Player> players = new List<Player>();
         public PictureManager pictureManager { get; }
-
+        public SoundManager soundManager { get; }
         public Game()
         {
             tileSize = 46;
             playerSize = 32;
             pictureManager = new PictureManager();
             pictureManager.LoadPictures();
+            soundManager = new SoundManager();
+            soundManager.LoadSounds();
+            soundManager.backgroundMusic.PlayLooping();
             for(int i = 0; i < amountOfPlayers; i++)
             {
                 Player player = new Player(this, i); //i = gives player its number
