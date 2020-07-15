@@ -18,12 +18,11 @@ namespace Bomberman
         public int amountOfBombs { get; set; }
         public int timeSpeededUp { get; set; }
         private int speed;
-        public Player(Game game, int numberOfPlayer) //: base(game)//BASE hra?
+        public Player(Game game, int numberOfPlayer)
         {
             this.game = game;
             visible = true;
             pickable = false;
-            //this.numberOfPlayer = numberOfPlayer;
             bombStrenght = 1;
             dead = false;
             orientation = Direction.NONE;

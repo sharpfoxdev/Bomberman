@@ -33,13 +33,12 @@ namespace Bomberman
 
             mapGrid = new Tile[width, height];
 
-            //jedu tak jak ctu po radcich
-            for (int y = 0; y < height; y++)//vyska - getlenght zjisti velikost pole v dane dimenzi
+            for (int y = 0; y < height; y++)
             {
                 string line = sr.ReadLine();
-                for(int x = 0; x < width; x++)//sirka
+                for(int x = 0; x < width; x++)
                 {
-                    char character = line[x];//prectu nacnteny radek po znacich
+                    char character = line[x];//reads the line character by character
                     switch (character)
                     {
                         case 's': //sand

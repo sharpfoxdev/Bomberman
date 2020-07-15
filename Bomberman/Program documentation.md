@@ -30,10 +30,10 @@ This game is a clone of bomberman game for two players. The code consists of sev
 		- central class of the code, its instance is passed to all of the instances of other classes, thus they can comunicate via this Game instance (which was initialised in Form1)
 
 		fields and properties:
-			+tileSize //size in px of the tiles (sand, wall, crate), bombs, explosion and bonuses
-			+PlayerSize //size in px of game players (they are slightly smaller than the tiles for easier movement in the game)
-			-pathToPlan //path to where the plan of mapgrid is stored
-			-amountOfPlayers
+			+int tileSize //size in px of the tiles (sand, wall, crate), bombs, explosion and bonuses
+			+int playerSize //size in px of game players (they are slightly smaller than the tiles for easier movement in the game)
+			-string pathToPlan //path to where the plan of mapgrid is stored
+			-int amountOfPlayers
 			+bool gameOver //true if game is over
 
 			+Map map //instance of map, does all the map related stuff
@@ -43,7 +43,7 @@ This game is a clone of bomberman game for two players. The code consists of sev
 
 
 		public Game()
-			- makes instances of players, map sound manager and picture manager, sets tileSize and PlayerSize
+			- makes instances of players, map sound manager and picture manager, sets tileSize and playerSize
 			- starts to play backgroundMusic on loop
 
 		public void Draw(Graphics g)
@@ -56,7 +56,7 @@ This game is a clone of bomberman game for two players. The code consists of sev
 			- sets Direction of player to NONE when the given key is lifted (because of that the player will stop moving)
 
 		public void Step()
-			- called from Form1 from timer method regularly
+			- called from Form1 from timer1_Tick() method regularly
 			- tells map to do step, checks for game over and then tells all players to do step as well
 
 # Map.cs
@@ -68,7 +68,7 @@ This game is a clone of bomberman game for two players. The code consists of sev
 		-List<GameObject>objects, objectsToAdd, objectsToDelete //lists of objects, objects that appeared and objects that disappeared during the step
 		-int width, height //size of mapGrid
 		-Random generator //for generating bonuses into crates randomly
-		-Game game //to comunicate with players and pictureManager through Game
+		-Game game //to comunicate with players and pictureManager through Game instance
 		-tileSize //size in px of tiles, used for their drawing in correct places
 
 	public Map(Game game, int tileSize, string pathToPlan)
@@ -81,17 +81,18 @@ This game is a clone of bomberman game for two players. The code consists of sev
 	public void Draw(Graphics g)
 		- called from Game
 		- draws all tiles in the correct position using tileSize
-		- tells all objects in objects (bombs, explosions, bonuses) to draw themselves, if they are visible (for example bonus in the crate isnt visible thus wont be drawn)
+		- tells all objects in ist of objects (bombs, explosions, bonuses) to draw themselves, if they are visible (for example bonus in the crate isnt visible thus wont be drawn)
 
 	public void Step()
 		- called from Game
-		- tells all objects in objects to do step and then checks if those objects colide with any of the players - if yes and the object is pickable, the player will "pick" it and the object moves into objectsToDelete
+		- tells all objects in the list of objects to do step and then checks if those objects colide with any of the players - if yes and the object is pickable, the player will "pick" it and the object moves into objectsToDelete (it disapeared)
 		- then it iterates through objectsToDelete and deletes all of those in objects, then clears objectsToDelete
-		- finally it does iterates through objectsToAdd and adds all of those into objects, then clears objectsToAdd
+		- finally it iterates through objectsToAdd and adds all of those into list of objects, then clears objectsToAdd
 
 	public bool IsStepable(int x, int y)
 		- called mostly from Player when he checks for movement possibilities
-		- gets the coordinates in window, matches this coordinates into mapGrid and returns whether the Tile on given position is stepable or not
+		- gets the coordinates in window, matches this coordinates into mapGrid and returns whether the Tile on given position is stepable or 
+		- also called from Bomb when it checks whether it should place Explosion on the tile
 
 	public bool IsDestroyable(int x, int y)
 		- called from Bomb when it checks if the explosion reached crate
@@ -102,7 +103,7 @@ This game is a clone of bomberman game for two players. The code consists of sev
 		- adds object into objectsToDelete
 
 	public void AddObject(GameObject obj)
-		- called from Player when it makes Bomb (adds Bomb) and from Bomb when it makes Explosion (Adds Explosion)
+		- called from Player when it makes Bomb (adds instance of Bomb) and from Bomb when it makes Explosion (adds instance of Explosion)
 		- adds object into objectsToAdd
 
 	public List<GameObject> ReturnGameObjects()
@@ -114,7 +115,7 @@ This game is a clone of bomberman game for two players. The code consists of sev
 	- abstract class, all game objects (bonuses, explosions, players, bombs) inherit from it
 
 	- fields and properties:
-		+Bitmap picture //stores png picture of the object
+		+Bitmap picture //stores picture of the object
 		+Point position //position of up left corner of object from the up left corner of picturebox, in pixels
 		protected Game game //all game objects know the same game instance
 		+bool pickable //true if the player can pick it
@@ -128,7 +129,7 @@ This game is a clone of bomberman game for two players. The code consists of sev
 
 	public bool Collision(GameObject obj)
 		- checks for collision with another game object
-		- returns true if this object and the object given as parameter colide
+		- returns true if this object and the object given as parameter collide
 
 # Player.cs
 ## class Player : GameObject
@@ -137,7 +138,7 @@ This game is a clone of bomberman game for two players. The code consists of sev
 	- fields and properites:
 		+int bombStrenght //strenght of detonation
 		+bool dead //true if dead
-		+Direction orientation //which way is player facing
+		+Direction orientation //which way is the player facing
 		+int amountOfBombs //how many bombs can player place at once
 		+int timeSpeededUp //how much time is left when the player moves faster due to speed bonus
 		-int speed //how many px does the player move itself every step
@@ -153,7 +154,7 @@ This game is a clone of bomberman game for two players. The code consists of sev
 
 	public override void Step()
 		- checks what speed he is supposed move
-		- then if possible moves in direction of set orientation (asks game.map if he can step on the new position)
+		- then if possible, moves in the direction of set orientation (asks game.map if he can step on the new position)
 		- if orientation = Direction.NONE then doesnt move (when no key is pressed that would move it)
 
 	public void PlaceBomb()
@@ -181,7 +182,7 @@ This game is a clone of bomberman game for two players. The code consists of sev
 			- player who placed this bomb gets one bomb back
 			- this bomb disappears (game.map.DeleteObject())
 			- in its spot there appears explosion
-			- then MakeExplosion() is called that makes new Explosions are in all four directions accoring to the bombStrenght
+			- then MakeExplosion() is called that makes new Explosions in all four directions accoring to the bombStrenght
 
 	private MakeExplosion(Direction direction)
 		- makes new Explosions in the given direction and with given bombStrenght

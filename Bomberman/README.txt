@@ -1,7 +1,7 @@
 For user guide check user_manual.txt.
-For for documentation of code check "Program documentation.txt".
+For for documentation of code check "Program documentation.md".
 
-This game was programmed by Michaela Markova in summer semmester of 2019/2020 as a semestral project of Programming 2 course, NPRG031, at Faculty of Mathematics and Physics at Charles University, Prague. 
+This game was programmed by Michaela Markova in summer semester of 2019/2020 as a semestral project of Programming 2 course, NPRG031, at Faculty of Mathematics and Physics at Charles University, Prague. 
 
 # Credits
 Graphics design:

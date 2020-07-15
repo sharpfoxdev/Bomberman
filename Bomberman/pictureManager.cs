@@ -9,7 +9,7 @@ namespace Bomberman
 {
     class PictureManager
     {
-        public Bitmap wall { get; set;} //normal variable instead of get set property should work too
+        public Bitmap wall { get; set;}
         public Bitmap crate { get; set; }
         public Bitmap sand { get; set; }
         public Bitmap player1Up { get; set; }

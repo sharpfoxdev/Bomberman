@@ -18,7 +18,7 @@ namespace Bomberman
         }
         public override void Step()
         {
-            foreach(Player player in game.players)//zjistim, ktery z hracu sebral bonus
+            foreach(Player player in game.players)//checks, which player picked bonus
             {
                 if (Collision(player))
                 {
